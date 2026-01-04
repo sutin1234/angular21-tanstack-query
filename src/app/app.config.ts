@@ -1,12 +1,19 @@
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import { provideAngularQuery, QueryClient } from '@tanstack/angular-query-experimental';
 
-import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideClientHydration(withEventReplay())
+    provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync(),
+    provideAngularQuery(new QueryClient()),
+    provideClientHydration(withEventReplay())
   ]
 };
